@@ -1,4 +1,4 @@
-## MY_ProjectName
+## My_ProjectName
         AF Learned
 # Getting Started with Create React App
 
