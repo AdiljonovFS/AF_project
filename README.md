@@ -1,10 +1,13 @@
+## MY_ProjectName
+        AF Learned
 # Getting Started with Create React App
+
 
 This project was bootstrapped
 my self study project
-## Available Scripts
+### `npm  install`
 
-In the project directory, you can run:
+
 
 ### `npm start`
 
