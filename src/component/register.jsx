@@ -2,19 +2,33 @@ import React, { useState } from 'react'
 import { Input } from '../ui'
 import { logo } from '../constant'
 import { useDispatch, useSelector } from 'react-redux'
-import {registerUserStart} from '../slice/auth'
+import {registerUserFailure, registerUserStart, registeterUserSuccess} from '../slice/auth'
+import AuthService from '../service/auth'
 
 const Register = () => {
-  const [userName, setUserName] = useState('')
+  const [username, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch();
   const {isLoading} = useSelector(state=>state.auth);
   
-  const loginHandler = e => {
+  const loginHandler = async e => {
     e.preventDefault();
     dispatch(registerUserStart());
+    const user = {
+      username,
+      email,
+      password,
+    }
+    try{
+      const response= await AuthService.register(user)
+      dispatch(registeterUserSuccess());
+      console.log(response)
+      console.log(user);
+    }catch(e){
+      dispatch(registerUserFailure())
+    }
   }
 
   return (
@@ -24,7 +38,7 @@ const Register = () => {
           <img className="mb-4" src={logo} alt="" width="150" height="100"/>
           <h1 className="h3 mb-3 fw-normal">Please Register</h1>
 
-          <Input label={"UserName"} value={userName} setValue={setUserName} />
+          <Input label={"UserName"} value={username} setValue={setUserName} />
           <Input label={"Email"} type={'email'} value={email} setValue={setEmail} />
           <Input label={"Password"} type={"password"} value={password} setValue={setPassword}/>
           <button 
