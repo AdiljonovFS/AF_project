@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Input } from '../ui'
 import { logo } from '../constant'
-import { loginUserStart, loginUserSuccess, loginUserFailur} from '../slice/auth'
 import { useSelector, useDispatch } from 'react-redux';
+import {signUserFailure, signUserStart, signUserSuccess} from '../slice/auth'
+import AuthService from '../service/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -10,9 +11,23 @@ const Login = () => {
   const dispatch = useDispatch();
   const {isLoading} = useSelector(state=>state.auth);
   // console.log(isLoading);
-  const loginHandler = e => {
+  const loginHandler = async e => {
     e.preventDefault();
-    dispatch(loginUserStart());
+    dispatch(signUserStart());
+    const user = {
+      email,
+      password
+    }
+    try{
+      const response= await AuthService.login(user)
+      dispatch(signUserSuccess(
+        response.user
+      ));
+    }catch(e){
+      dispatch(signUserFailure(
+        e.response.data.errors
+      ))
+    }
   }
   
 

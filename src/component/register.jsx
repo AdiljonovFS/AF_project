@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Input } from '../ui'
 import { logo } from '../constant'
 import { useDispatch, useSelector } from 'react-redux'
-import {registerUserFailure, registerUserStart, registeterUserSuccess} from '../slice/auth'
+import {signUserFailure, signUserStart, signUserSuccess} from '../slice/auth'
 import AuthService from '../service/auth'
 
 const Register = () => {
@@ -13,9 +13,9 @@ const Register = () => {
   const dispatch = useDispatch();
   const {isLoading} = useSelector(state=>state.auth);
   
-  const loginHandler = async e => {
+  const registerHandler = async e => {
     e.preventDefault();
-    dispatch(registerUserStart());
+    dispatch(signUserStart());
     const user = {
       username,
       email,
@@ -23,11 +23,13 @@ const Register = () => {
     }
     try{
       const response= await AuthService.register(user)
-      dispatch(registeterUserSuccess());
-      console.log(response)
-      console.log(user);
+      dispatch(signUserSuccess(
+        response.user
+      ));
     }catch(e){
-      dispatch(registerUserFailure())
+      dispatch(signUserFailure(
+        e.response.data.errors
+      ))
     }
   }
 
@@ -45,7 +47,7 @@ const Register = () => {
             className="btn btn-primary w-100 py-2 mt-2" 
             type="submit"
             disabled={isLoading}
-            onClick={loginHandler} >
+            onClick={registerHandler} >
               {isLoading? 'Loading...' : 'Register'}
           </button>
           <p className="mt-5 mb-3 text-body-secondary">© 2024</p>
