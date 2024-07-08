@@ -20,13 +20,26 @@ export const authSlice = createSlice({
         },
         loginUserFailure: (state) => {  
             state.isLoading = false; 
-        }
+        },
+
+
+        registerUserStart: (state) => {
+            state.isLoading = true;
+        },
+        registeterUserSuccess: (state, action) => {
+            state.isLoading = false;
+            state.loggedIn = true;
+            state.user = action.payload;
+        },
+        registerUserFailure: (state) => {  
+            state.isLoading = false; 
+        },
     }
 });
 
-export const { loginUserStart, loginUserSuccess, loginUserFailure } = authSlice.actions;    
+export const { loginUserStart, loginUserSuccess, loginUserFailure,registerUserStart, registeterUserSuccess, registerUserFailure } = authSlice.actions;    
  export default authSlice.reducer; 
- 
+
  // Example usage:
  // import { loginUserStart, loginUserSuccess, loginUserFailure } from './authSlice';
  // import { useDispatch } from 'react-redux';
