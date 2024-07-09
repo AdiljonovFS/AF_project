@@ -11,7 +11,8 @@ const AuthService = {
         return response.data 
     },
     async getUser() {
-        // API call to logout
+        const {data} = await axios.get('/user')
+		return data
     }
 
 }
